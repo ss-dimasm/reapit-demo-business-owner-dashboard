@@ -62,24 +62,22 @@ export const Nav: FC = () => {
         },
       ],
     },
+    {
+      itemIndex: 4,
+      text: 'Dashboard',
+      iconId: 'defaultMenu',
+      callback: navigate(history, Routes.DASHBOARD),
+    },
   ]
 
   if (!connectIsDesktop) {
-    navOptions.push(
-      {
-        itemIndex: 4,
-        callback: () => (window.location.href = window.reapit.config.marketplaceUrl),
-        iconId: 'appsMenu',
-        text: 'Apps',
-      },
-      {
-        itemIndex: 5,
-        callback: connectLogoutRedirect,
-        isSecondary: true,
-        iconId: 'logoutMenu',
-        text: 'Logout',
-      },
-    )
+    navOptions.push({
+      itemIndex: 6,
+      callback: connectLogoutRedirect,
+      isSecondary: true,
+      iconId: 'logoutMenu',
+      text: 'Logout',
+    })
   }
 
   return <NavResponsive options={navOptions} defaultNavIndex={getDefaultNavIndex(window.location.pathname)} />
