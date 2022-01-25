@@ -1,9 +1,7 @@
-import { ChangeEvent, Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction } from 'react'
 
 export interface CardChartHeaderProps {
-  changeCategory: (
-    selectedCategory: Dispatch<SetStateAction<ChartHeaderOption>>,
-  ) => (event: ChangeEvent<HTMLSelectElement>) => void
+  changeTabMenuOfCategory: (selectedCategory: ChartHeaderOption) => void
   selectedCategory: ChartHeaderOption
   setSelectedCategory: Dispatch<SetStateAction<ChartHeaderOption>>
 }

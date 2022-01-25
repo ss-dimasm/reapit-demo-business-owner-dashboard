@@ -1,46 +1,66 @@
-import React, { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react'
+import React, { FC, ReactElement, useState } from 'react'
 
 import { CardWrap } from '@reapit/elements'
 import CardChartHeader from './ui/cardChartHeader'
-import { ChartHeaderOption } from './ui/cardChartHeader/index-interfaces'
 import CardChartTabs from './ui/cardChartTabs'
 import CardChartContent from './ui/cardChartContent'
 
-const changeSelectOption =
-  (setSelectedCategory: Dispatch<SetStateAction<ChartHeaderOption>>) => (event: ChangeEvent<HTMLSelectElement>) =>
-    setSelectedCategory(event.target.value as ChartHeaderOption)
+import { ChartHeaderOption } from './ui/cardChartHeader/index-interfaces'
 
-const ChartSection = () => {
+import type { PropertiesSubMenuListType } from './chart/properties/index-interfaces'
+import type { ApplicantsSubMenuListType } from './chart/applicants/index-interfaces'
+import type { AgentsSubMenuListType } from './chart/agent/index-interfaces'
+import { SubMenuListType } from './ui/cardChartContent/index-interfaces'
+
+const PROPERTIES_TAB_MENU: PropertiesSubMenuListType[] = ['On Sell', 'On Rent', 'Status', 'Type', 'Location']
+const AGENTS_TAB_MENU: AgentsSubMenuListType[] = ['Agent1', 'Agent 2']
+const APPLICANTS_TAB_MENU: ApplicantsSubMenuListType[] = ['Applicant 1', 'Applicant 2']
+
+const ChartSection: FC<{}> = (): ReactElement => {
   const [selectedCategory, setSelectedCategory] = useState<ChartHeaderOption>(ChartHeaderOption.property)
-  // eslint-disable-next-line
-  const [subMenuOfCategory, setSubMenuOfCategory] = useState<string[]>()
+  const [tabMenuOfCategory, setTabMenuOfCategory] = useState<SubMenuListType>(PROPERTIES_TAB_MENU)
+  const [activeTabMenu, setActiveTabMenu] = useState<number>(0)
 
-  // atm, its hard coded
-  let data: string[]
-  switch (selectedCategory) {
-    case ChartHeaderOption.property:
-      data = ['To Sell', 'To Let']
-      break
-    case ChartHeaderOption.agent:
-      data = ['Agent1', 'Agent 2']
-      break
-    case ChartHeaderOption.applicant:
-      data = ['Applicant 1', 'Applicant 2']
+  const changeTabMenuOfCategory = (selectedCategory: ChartHeaderOption): void => {
+    let data: SubMenuListType
+    switch (selectedCategory) {
+      case ChartHeaderOption.property:
+        data = PROPERTIES_TAB_MENU
+        break
+      case ChartHeaderOption.agent:
+        data = AGENTS_TAB_MENU
+        break
+      case ChartHeaderOption.applicant:
+        data = APPLICANTS_TAB_MENU
+    }
+
+    // set current state
+    setSelectedCategory(selectedCategory)
+    setTabMenuOfCategory(data)
+    setActiveTabMenu(0)
   }
 
-  useEffect(() => {
-    setSubMenuOfCategory(data)
-  }, [selectedCategory])
+  const changeTheTabActiveMenu = (number: number) => {
+    setActiveTabMenu(number)
+  }
 
   return (
     <CardWrap className="el-p0">
       <CardChartHeader
-        changeCategory={changeSelectOption}
+        changeTabMenuOfCategory={changeTabMenuOfCategory}
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
       />
-      <CardChartTabs subMenuList={subMenuOfCategory!} />
-      <CardChartContent />
+      <CardChartTabs
+        tabMenuList={tabMenuOfCategory}
+        activeTabMenu={activeTabMenu}
+        changeActiveTabMenu={changeTheTabActiveMenu}
+      />
+      <CardChartContent
+        selectedCategory={selectedCategory}
+        tabMenuOfCategory={tabMenuOfCategory}
+        tabActive={activeTabMenu}
+      />
     </CardWrap>
   )
 }

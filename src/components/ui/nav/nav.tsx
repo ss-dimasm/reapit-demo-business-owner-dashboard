@@ -29,41 +29,6 @@ export const Nav: FC = () => {
     },
     {
       itemIndex: 1,
-      text: 'Home',
-      iconId: 'defaultMenu',
-      callback: navigate(history, Routes.HOME),
-    },
-    {
-      itemIndex: 2,
-      text: 'Data',
-      iconId: 'dataMenu',
-      callback: navigate(history, Routes.DATA),
-    },
-    {
-      itemIndex: 3,
-      text: 'UI',
-      iconId: 'uiMenu',
-      callback: navigate(history, Routes.TABLE),
-      subItems: [
-        {
-          itemIndex: 1,
-          callback: navigate(history, Routes.TABLE),
-          text: 'Table',
-        },
-        {
-          itemIndex: 2,
-          callback: navigate(history, Routes.LIST),
-          text: 'List',
-        },
-        {
-          itemIndex: 3,
-          callback: navigate(history, Routes.FORM),
-          text: 'Form',
-        },
-      ],
-    },
-    {
-      itemIndex: 4,
       text: 'Dashboard',
       iconId: 'defaultMenu',
       callback: navigate(history, Routes.DASHBOARD),
@@ -72,7 +37,7 @@ export const Nav: FC = () => {
 
   if (!connectIsDesktop) {
     navOptions.push({
-      itemIndex: 6,
+      itemIndex: 2,
       callback: connectLogoutRedirect,
       isSecondary: true,
       iconId: 'logoutMenu',
