@@ -4,14 +4,13 @@ import { Tabs, TabsOption } from '@reapit/elements'
 import { CardChartTabsProps } from './index-interfaces'
 
 const CardChartTabs: FC<CardChartTabsProps> = ({ tabMenuList, activeTabMenu, changeActiveTabMenu }): ReactElement => {
-  // eslint-disable-next-line
   const [tabRefactoredMenu, setTabRefactoredMenu] = useState<TabsOption[]>()
 
   useEffect(() => {
     if (tabMenuList) {
-      const newData: TabsOption[] = tabMenuList.map((each, index) => {
+      const newData: TabsOption[] = tabMenuList.map((each, index): TabsOption => {
         return {
-          id: index.toString(),
+          id: 'chart-' + index.toString(),
           value: index.toString(),
           text: each,
           isChecked: index === activeTabMenu,
@@ -26,7 +25,7 @@ const CardChartTabs: FC<CardChartTabsProps> = ({ tabMenuList, activeTabMenu, cha
   return (
     <>
       <Tabs
-        name="webhook-tabs"
+        name="chart-tabs"
         isFullWidth
         options={tabRefactoredMenu}
         onChange={(e) => changeActiveTabMenu(parseInt(e.currentTarget.value))}

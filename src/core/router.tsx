@@ -33,6 +33,7 @@ const HomePage = React.lazy(() => catchChunkError(() => import('../components/pa
 const ExamplesPage = React.lazy(() => catchChunkError(() => import('../components/pages/examples-page')))
 const DataPage = React.lazy(() => catchChunkError(() => import('../components/pages/data-page')))
 const DashboardPage = React.lazy(() => catchChunkError(() => import('../components/pages/dashboard-page')))
+const PropertiesPage = React.lazy(() => catchChunkError(() => import('../components/pages/property-page')))
 
 const Router = () => (
   <BrowserRouter history={history}>
@@ -41,12 +42,13 @@ const Router = () => (
         <Route path={Routes.LOGIN} component={LoginPage} />
         <PrivateRouteWrapper>
           <Switch>
+            <Route path={Routes.DASHBOARD} exact component={DashboardPage} />
+            <Route path={Routes.PROPERTIES} exact component={PropertiesPage} />
             <Route path={Routes.HOME} exact component={HomePage} />
             <Route path={Routes.FORM} exact component={ExamplesPage} />
             <Route path={Routes.TABLE} exact component={ExamplesPage} />
             <Route path={Routes.LIST} exact component={ExamplesPage} />
             <Route path={Routes.DATA} exact component={DataPage} />
-            <Route path={Routes.DASHBOARD} exact component={DashboardPage} />
           </Switch>
         </PrivateRouteWrapper>
         <Redirect to={Routes.LOGIN} />

@@ -6,4 +6,5 @@ export const Routes = {
   DATA: '/data',
   LOGIN: '/login',
   DASHBOARD: '/dashboard',
+  PROPERTIES: '/properties',
 }

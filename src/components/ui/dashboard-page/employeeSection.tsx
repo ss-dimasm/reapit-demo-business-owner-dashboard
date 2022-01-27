@@ -1,12 +1,16 @@
-import React from 'react'
+import React, { FC, ReactElement, useContext } from 'react'
 
 import { CardWrap, SmallText } from '@reapit/elements'
 
 import CardHeader from './ui/cardHeader'
 import CardListWrapper from './ui/cardListWrapper'
 import CardListContent from './ui/cardListContentEmployee'
+import { DataContext, DataContextParams } from '../../pages/dashboard-page'
+import CardLoading from './ui/cardLoading'
 
-const EmployeeSection = () => {
+const EmployeeSection: FC<{}> = (): ReactElement => {
+  const centralData = useContext<DataContextParams | null>(DataContext!)
+  if (centralData!.contactProperty.isFetching) return <CardLoading height={325} />
   // logic here
   return (
     <CardWrap className="el-p0">

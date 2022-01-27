@@ -33,11 +33,17 @@ export const Nav: FC = () => {
       iconId: 'defaultMenu',
       callback: navigate(history, Routes.DASHBOARD),
     },
+    {
+      itemIndex: 2,
+      text: 'Property',
+      iconId: 'officesMenu',
+      callback: navigate(history, Routes.PROPERTIES),
+    },
   ]
 
   if (!connectIsDesktop) {
     navOptions.push({
-      itemIndex: 2,
+      itemIndex: 3,
       callback: connectLogoutRedirect,
       isSecondary: true,
       iconId: 'logoutMenu',

@@ -1,11 +1,16 @@
-import React, { FC, ReactElement } from 'react'
+import React, { FC, ReactElement, useContext } from 'react'
 import { CardWrap } from '@reapit/elements'
 import CardHeader from './ui/cardHeader'
 import CardIcon from './ui/cardIcon'
 import CardSummaryWrapper from './ui/cardSummaryWrapper'
 import CardSummaryContent from './ui/cardSummaryContent'
+import { DataContext, DataContextParams } from '../../pages/dashboard-page'
+import CardLoading from './ui/cardLoading'
 
 const ApplicantSummary: FC<{}> = (): ReactElement => {
+  const centralData = useContext<DataContextParams | null>(DataContext!)
+  if (centralData!.applicantsProperty.isFetching) return <CardLoading />
+
   return (
     <>
       <CardWrap className="el-p0">

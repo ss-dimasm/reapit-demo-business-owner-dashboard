@@ -9,7 +9,7 @@ import type { ApexOptions } from 'apexcharts'
 import { LineSeriesType } from '../config-interfaces'
 
 const SellChartProperties: FC<ChartSpecificPropertiesProps> = (props): ReactElement => {
-  const { tabActive, tabMenuOfCategory, propertyData } = props
+  const { tabActive, tabMenuOfCategory } = props
 
   const [series] = useState<LineSeriesType[]>([
     {
@@ -72,7 +72,6 @@ const SellChartProperties: FC<ChartSpecificPropertiesProps> = (props): ReactElem
   ])
   const [options] = useState<ApexOptions>(LINE_CHART_CONFIG)
 
-  console.log(propertyData)
   return (
     <>
       <div>Chart Properties: {tabMenuOfCategory[tabActive]}</div>

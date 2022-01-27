@@ -1,18 +1,18 @@
 import { ReapitConnectSession, useReapitConnect } from '@reapit/connect-session'
-import { PropertyModelPagedResult } from '@reapit/foundations-ts-definitions'
+import { NegotiatorModelPagedResult } from '@reapit/foundations-ts-definitions'
 import axios from 'axios'
 import { useInfiniteQuery } from 'react-query'
 import { BASE_HEADERS, URLS } from '../../constants/api'
 import { reapitConnectBrowserSession } from '../../core/connect-session'
 
-const getPagedPropertiesByOfficeId = async (
+const getPagedAgentsByOfficeId = async (
   connectSession: ReapitConnectSession,
   officeId: string,
   pageNumber: number,
-): Promise<PropertyModelPagedResult | undefined> => {
+): Promise<NegotiatorModelPagedResult | undefined> => {
   if (!connectSession) return
   const { data } = await axios.get(
-    `${window.reapit.config.platformApiUrl}${URLS.PROPERTIES}?officeId=${officeId}&pageSize=100&pageNumber=${pageNumber}`,
+    `${window.reapit.config.platformApiUrl}${URLS.AGENTS}?officeId=${officeId}&pageSize=100&pageNumber=${pageNumber}`,
     {
       headers: {
         ...BASE_HEADERS,
@@ -24,11 +24,11 @@ const getPagedPropertiesByOfficeId = async (
   return data
 }
 
-const useGetPagedPropertiesByOfficeId = (officeId: string, pageParam: number) => {
+const useGetPagedAgentsByOfficeId = (officeId: string, pageParam: number) => {
   const { connectSession } = useReapitConnect(reapitConnectBrowserSession)
   return useInfiniteQuery(
-    ['Paged Property Data with Id Office page', pageParam],
-    () => getPagedPropertiesByOfficeId(connectSession!, officeId, pageParam),
+    ['Paged Agents Data with Id Office page', pageParam],
+    () => getPagedAgentsByOfficeId(connectSession!, officeId, pageParam),
     {
       enabled: !!connectSession,
       keepPreviousData: true,
@@ -41,4 +41,4 @@ const useGetPagedPropertiesByOfficeId = (officeId: string, pageParam: number) =>
   )
 }
 
-export default useGetPagedPropertiesByOfficeId
+export default useGetPagedAgentsByOfficeId

@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useState } from 'react'
+import React, { FC, ReactElement, useContext, useState } from 'react'
 
 import { CardWrap } from '@reapit/elements'
 import CardChartHeader from './ui/cardChartHeader'
@@ -11,12 +11,17 @@ import type { PropertiesSubMenuListType } from './chart/properties/index-interfa
 import type { ApplicantsSubMenuListType } from './chart/applicants/index-interfaces'
 import type { AgentsSubMenuListType } from './chart/agent/index-interfaces'
 import { SubMenuListType } from './ui/cardChartContent/index-interfaces'
+import { DataContext, DataContextParams } from '../../pages/dashboard-page'
+import CardLoading from './ui/cardLoading'
 
 const PROPERTIES_TAB_MENU: PropertiesSubMenuListType[] = ['On Sell', 'On Rent', 'Status', 'Type', 'Location']
 const AGENTS_TAB_MENU: AgentsSubMenuListType[] = ['Agent1', 'Agent 2']
 const APPLICANTS_TAB_MENU: ApplicantsSubMenuListType[] = ['Applicant 1', 'Applicant 2']
 
 const ChartSection: FC<{}> = (): ReactElement => {
+  const centralData = useContext<DataContextParams | null>(DataContext!)
+  if (centralData!.propertiesProperty.isFetching) return <CardLoading height={675} />
+
   const [selectedCategory, setSelectedCategory] = useState<ChartHeaderOption>(ChartHeaderOption.property)
   const [tabMenuOfCategory, setTabMenuOfCategory] = useState<SubMenuListType>(PROPERTIES_TAB_MENU)
   const [activeTabMenu, setActiveTabMenu] = useState<number>(0)

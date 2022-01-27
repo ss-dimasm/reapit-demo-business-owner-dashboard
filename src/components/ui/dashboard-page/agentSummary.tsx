@@ -1,14 +1,16 @@
 import { CardWrap } from '@reapit/elements'
-import React, { FC, ReactElement } from 'react'
+import React, { FC, ReactElement, useContext } from 'react'
+import { DataContext, DataContextParams } from '../../pages/dashboard-page'
 import CardHeader from './ui/cardHeader'
 import CardIcon from './ui/cardIcon'
+import CardLoading from './ui/cardLoading'
 import CardSummaryContent from './ui/cardSummaryContent'
 import CardSummaryWrapper from './ui/cardSummaryWrapper'
 
 const AgentSummary: FC<{}> = (): ReactElement => {
-  /**
-   * @todo integrate with Reapit Resources (using React Query based OfficeId['MKT'])
-   */
+  const centralData = useContext<DataContextParams | null>(DataContext!)
+  if (centralData!.agentsProperty.isFetching) return <CardLoading />
+
   return (
     <>
       <CardWrap className="el-p0">
