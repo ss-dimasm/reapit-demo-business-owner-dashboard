@@ -1,4 +1,4 @@
-import { PropertyModelPagedResult } from '@reapit/foundations-ts-definitions'
+import { PropertyModel } from '@reapit/foundations-ts-definitions'
 
 export type PropertiesSubMenuListType = 'On Sell' | 'On Rent' | 'Status' | 'Type' | 'Location'
 
@@ -8,5 +8,5 @@ export interface ChartPropertiesProps {
 }
 
 export interface ChartSpecificPropertiesProps extends ChartPropertiesProps {
-  propertyData: PropertyModelPagedResult | null
+  propertyData: PropertyModel[]
 }

@@ -28,22 +28,27 @@ import useGetPagedTasksByOfficeId from '../../platform-api/dashboard-page/getPag
 export interface DataContextParams {
   propertiesProperty: {
     isFetching: boolean
+    totalData: number
     data: PropertyModelPagedResult['_embedded'][]
   }
   agentsProperty: {
     isFetching: boolean
+    totalData: number
     data: NegotiatorModelPagedResult['_embedded'][]
   }
   applicantsProperty: {
     isFetching: boolean
+    totalData: number
     data: ApplicantModelPagedResult['_embedded'][]
   }
   contactProperty: {
     isFetching: boolean
+    totalData: number
     data: ContactModelPagedResult['_embedded'][]
   }
   taskProperty: {
     isFetching: boolean
+    totalData: number
     data: TaskModelPagedResult['_embedded'][]
   }
 }
@@ -118,22 +123,27 @@ const DashboardPage: FC = (): ReactElement => {
   const contextData: DataContextParams = {
     propertiesProperty: {
       isFetching: propertiesFetchedData.isFetching,
+      totalData: propertiesFetchedData.data?.pages[0]?.totalCount!,
       data: propertiesData,
     },
     agentsProperty: {
       isFetching: agentsFetchedData.isFetching,
+      totalData: agentsFetchedData.data?.pages[0]?.totalCount!,
       data: negotiatorsData,
     },
     applicantsProperty: {
       isFetching: applicantsFetchedData.isFetching,
+      totalData: applicantsFetchedData.data?.pages[0]?.totalCount!,
       data: applicantsData,
     },
     contactProperty: {
       isFetching: contactsFetchedData.isFetching,
+      totalData: contactsFetchedData.data?.pages[0]?.totalCount!,
       data: contactsData,
     },
     taskProperty: {
       isFetching: taskFetchedData.isFetching,
+      totalData: taskFetchedData.data?.pages[0]?.totalCount!,
       data: tasksData,
     },
   }

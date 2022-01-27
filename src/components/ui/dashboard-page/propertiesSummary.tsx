@@ -9,20 +9,57 @@ import CardSummaryContent from './ui/cardSummaryContent'
 
 import CardLoading from './ui/cardLoading'
 import { DataContext, DataContextParams } from '../../pages/dashboard-page'
+import { PropertyModel } from '@reapit/foundations-ts-definitions'
+import {
+  propertiesFilterMarketingMode,
+  propertiesFilterRentStatus,
+  propertiesFilterSellStatus,
+  regroupArray,
+  removeDuplicateArray,
+} from '../../../utils/navigation'
 
 const PropertiesSummary: FC<{}> = (): ReactElement => {
   const centralData = useContext<DataContextParams | null>(DataContext!)
-  if (centralData!.propertiesProperty.isFetching) return <CardLoading />
+  const { totalData, isFetching, data } = centralData?.propertiesProperty as DataContextParams['propertiesProperty']
 
+  if (isFetching) return <CardLoading />
+
+  // regroup data
+  const regroupArrData: PropertyModel[] = regroupArray<PropertyModel>(data as PropertyModel[][])
+  // remove duplicate data
+  const removeDuplicatedData: PropertyModel[] = removeDuplicateArray<PropertyModel>(regroupArrData as PropertyModel[])
+  // on sell properties
+  const toSellProperties: PropertyModel[] = propertiesFilterMarketingMode(removeDuplicatedData, 'selling')
+  // on rent properties
+  const toRentProperties: PropertyModel[] = propertiesFilterMarketingMode(removeDuplicatedData, 'letting')
+  // on sell/rent properties
+  const toSellAndRentProperties: PropertyModel[] = propertiesFilterMarketingMode(
+    removeDuplicatedData,
+    'sellingAndLetting',
+  )
+  const toSellPropertiesQuantity = propertiesFilterSellStatus(toSellProperties)
+  const toRentPropertiesQuantity = propertiesFilterRentStatus(toRentProperties)
+  const toSellAndRentPropertiesQuantity = propertiesFilterRentStatus(toSellAndRentProperties)
+
+  // filter sell status, then regroup again
+  const availablePropertiesQuantity =
+    toSellPropertiesQuantity.available + toRentPropertiesQuantity.available + toSellAndRentPropertiesQuantity.available
+
+  const occupiedPropertiesQuantity =
+    toSellPropertiesQuantity.occupied + toRentPropertiesQuantity.occupied + toSellAndRentPropertiesQuantity.occupied
+
+  const unlistedPropertiesQuantity =
+    toSellPropertiesQuantity.unlisted + toRentPropertiesQuantity.unlisted + toSellAndRentPropertiesQuantity.unlisted
+  // logic to find occupied, unlisted, renovated
   return (
     <>
       <CardWrap className="el-p0">
         <CardHeader title="Property" additionalLinkText="See all properties" link="summary/properties" />
-        <CardIcon iconType="apartment" totalItems={320} alternativeText="Properties" />
+        <CardIcon iconType="apartment" totalItems={totalData} alternativeText="Properties" />
         <CardSummaryWrapper>
-          <CardSummaryContent totalCount={243} alternativeText="Occupied" />
-          <CardSummaryContent totalCount={33} alternativeText="Unlisted" isCenterPosition />
-          <CardSummaryContent totalCount={44} alternativeText="Renovate" />
+          <CardSummaryContent totalCount={occupiedPropertiesQuantity} alternativeText="Occupied" />
+          <CardSummaryContent totalCount={unlistedPropertiesQuantity} alternativeText="Unlisted" isCenterPosition />
+          <CardSummaryContent totalCount={availablePropertiesQuantity} alternativeText="Available" />
         </CardSummaryWrapper>
       </CardWrap>
     </>

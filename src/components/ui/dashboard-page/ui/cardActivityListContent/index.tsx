@@ -17,11 +17,14 @@ interface CardActivityListContentProps {
   type: ActivityTabMenuType
   taskData: TaskModel
 }
-const CardActivityListContent: FC<CardActivityListContentProps> = (): ReactElement => {
+const CardActivityListContent: FC<CardActivityListContentProps> = ({ taskData }): ReactElement => {
+  // if else type
+  // task data
+
   return (
     <div className={wrapper}>
       <div className={insideWrapper}>
-        <h3 className={activityText}>Arrange for bathroom photos to be retaken</h3>
+        <h3 className={activityText}>{taskData.text}</h3>
         <FlexContainer className={elPy3}>
           <div className={typeWrapper + ' ' + typePropertyWrapper}>Property</div>
           <div className={typeWrapper + ' ' + typeAgentWrapper}>Agent</div>

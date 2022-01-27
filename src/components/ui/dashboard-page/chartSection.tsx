@@ -20,7 +20,9 @@ const APPLICANTS_TAB_MENU: ApplicantsSubMenuListType[] = ['Applicant 1', 'Applic
 
 const ChartSection: FC<{}> = (): ReactElement => {
   const centralData = useContext<DataContextParams | null>(DataContext!)
-  if (centralData!.propertiesProperty.isFetching) return <CardLoading height={675} />
+  const { isFetching } = centralData?.propertiesProperty as DataContextParams['propertiesProperty']
+
+  if (isFetching) return <CardLoading height={675} />
 
   const [selectedCategory, setSelectedCategory] = useState<ChartHeaderOption>(ChartHeaderOption.property)
   const [tabMenuOfCategory, setTabMenuOfCategory] = useState<SubMenuListType>(PROPERTIES_TAB_MENU)
