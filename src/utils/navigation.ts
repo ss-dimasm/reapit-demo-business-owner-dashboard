@@ -144,15 +144,72 @@ export const filterPropertiesBasedCreatedData = <T>(propertyData: T[], nameSerie
       data: [],
     },
   ]
+  // loop the array
+  // group by month
+  // if isn't exist the month, then add new
+  // if the created field is exits, then sum them by 1 in the existed field
 
   for (let i = 0; i < propertyData.length; i++) {
     const eachData = propertyData[i] as any
+    const date = new Date(eachData.created)
+    const year = date.getFullYear()
+    const month = ('0' + (date.getMonth() + 1)).slice(-2)
 
-    const filteredData = {
-      x: eachData!.created!,
-      y: 1,
+    const checkData = lineChartData[0].data.filter((a) => a.x === `${year}-${month}`)
+    if (checkData.length !== 0) {
+      checkData[0].y++
+    } else {
+      lineChartData[0].data.push({
+        x: `${year}-${month}`,
+        y: 1,
+      })
     }
-    lineChartData[0].data.push(filteredData)
   }
   return lineChartData
+}
+
+interface PieChartInterface {
+  series: number[]
+  labels: string[]
+}
+
+export const filterPropertiesByStatus = (
+  propertiesData: PropertyModel[],
+  marketingMode: 'selling' | 'letting',
+): PieChartInterface => {
+  switch (marketingMode) {
+    case 'selling':
+      return propertiesDataOnSellForPieChart(propertiesData)
+    case 'letting':
+      return propertiesDataOnRentForPieChart(propertiesData)
+  }
+}
+
+const propertiesDataOnSellForPieChart = (propertiesData: PropertyModel[]): PieChartInterface => {
+  console.log(propertiesData)
+
+  /**
+   * - sell props
+   *  - series (count of each status Property)
+   *  - label (based property status)
+   * - rent properties
+   *  - series
+   *  -label
+   * @todo
+   */
+  const data = {
+    series: [1, 3, 4],
+    labels: ['available', 'unlisted', 'occupied'],
+  }
+  return data
+}
+
+const propertiesDataOnRentForPieChart = (propertiesData: PropertyModel[]): PieChartInterface => {
+  console.log(propertiesData)
+  const data = {
+    series: [],
+    labels: [],
+  }
+
+  return data
 }

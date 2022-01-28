@@ -22,6 +22,8 @@ const ChartProperties: FC<ChartPropertiesProps> = (props): ReactElement => {
 
   // on sell properties
   const toSellProperties: PropertyModel[] = propertiesFilterMarketingMode(removeDuplicatedData, 'selling')
+  // on rent properties
+  const toRentProperties: PropertyModel[] = propertiesFilterMarketingMode(removeDuplicatedData, 'letting')
 
   const { tabActive, tabMenuOfCategory } = props
 
@@ -29,7 +31,7 @@ const ChartProperties: FC<ChartPropertiesProps> = (props): ReactElement => {
     case 'On Sell':
       return <SellChartProperties {...props} propertyData={toSellProperties} />
     case 'On Rent':
-      return <ToLetChartProperties {...props} propertyData={removeDuplicatedData} />
+      return <ToLetChartProperties {...props} propertyData={toRentProperties} />
     case 'Status':
       return <StatusChartProperties {...props} propertyData={removeDuplicatedData} />
     case 'Type':

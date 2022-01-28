@@ -52,7 +52,7 @@ const ChartSection: FC<{}> = (): ReactElement => {
   }
 
   return (
-    <CardWrap className="el-p0">
+    <CardWrap className="el-p0" style={{ minHeight: 675 }}>
       <CardChartHeader
         changeTabMenuOfCategory={changeTabMenuOfCategory}
         selectedCategory={selectedCategory}

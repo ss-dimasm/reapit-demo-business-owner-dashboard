@@ -67,3 +67,51 @@ export const LINE_CHART_CONFIG: ApexOptions = {
     dashArray: 10,
   },
 }
+
+export const COLUMN_CHART_CONFIG: ApexOptions = {
+  chart: {
+    type: 'bar',
+    height: 350,
+  },
+  plotOptions: {
+    bar: {
+      horizontal: false,
+      columnWidth: '55%',
+    },
+  },
+  dataLabels: {
+    enabled: false,
+  },
+  stroke: {
+    show: true,
+    width: 2,
+    colors: ['transparent'],
+  },
+  yaxis: {
+    title: {
+      text: 'Properties On Sale',
+    },
+  },
+  fill: {
+    opacity: 1,
+  },
+}
+
+export const DONUT_PIE_CHART_CONFIG: ApexOptions = {
+  chart: {
+    type: 'donut',
+    width: 1000,
+  },
+  responsive: [
+    {
+      options: {
+        chart: {
+          width: 500,
+        },
+        legend: {
+          position: 'bottom',
+        },
+      },
+    },
+  ],
+}
