@@ -1,0 +1,10 @@
+{
+  "id": "1e98df73-2922-4885-907e-5cebf24ea661",
+  "appId": "1e98df73-2922-4885-907e-5cebf24ea661",
+  "subDomain": "skinny-hands",
+  "packageManager": "yarn",
+  "repospitory": "https://github.com/ss-dimasm/reapit-demo-business-owner-dashboard",
+  "buildDir": "build",
+  "outDir": "build",
+  "developerId": "23c2c185-4a9c-4104-9417-5f3dabf258c8"
+}

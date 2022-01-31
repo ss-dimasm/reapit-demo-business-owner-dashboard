@@ -5,11 +5,11 @@ export const wrapperMain = css`
   width: 94vw;
 `
 export const wrapperLeft = css`
-  width: 29%;
+  width: 34%;
   height: 100%;
 `
 
 export const wrapperRight = css`
-  width: 70%;
+  width: 65%;
   height: 100%;
 `

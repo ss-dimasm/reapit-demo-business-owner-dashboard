@@ -9,9 +9,11 @@ import {
   wrapper,
 } from './__style__/searchFilter.style'
 
-interface SearchFilterProps {}
+interface SearchFilterProps {
+  openFilterModal: () => void
+}
 
-const SearchFilter: FC<SearchFilterProps> = (): ReactElement => {
+const SearchFilter: FC<SearchFilterProps> = ({ openFilterModal }): ReactElement => {
   return (
     <>
       <div className={wrapper}>
@@ -20,8 +22,8 @@ const SearchFilter: FC<SearchFilterProps> = (): ReactElement => {
             <Input type="text" id="location" placeholder="Search Location" autoComplete="off" />
             <Icon icon="searchSystem" iconSize="small" />
           </InputGroup>
-          <FlexContainer className={filterButtonStyle} isFlexAlignCenter>
-            <Icon icon="filterSystem" iconSize="small" />
+          <FlexContainer className={filterButtonStyle} isFlexAlignCenter onClick={openFilterModal}>
+            <Icon icon="filterSystem" iconSize="small" color="var(--color-grey-light)" />
             <div className={filterTextStyleWrapper}>
               <p className={filterTextStyle}>4</p>
             </div>
