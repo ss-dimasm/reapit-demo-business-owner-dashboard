@@ -28,11 +28,11 @@ const StatusChartProperties: FC<ChartSpecificPropertiesProps> = (props): ReactEl
     <FlexContainer isFlexJustifyBetween>
       <FlexContainer isFlexColumn>
         <Subtitle hasNoMargin>On Sell</Subtitle>
-        <ReactApexChart options={options} series={onSaleSeries} type="donut" height={700} width={600} />
+        <ReactApexChart options={options} series={onSaleSeries} type="donut" height={700} width={'100%'} />
       </FlexContainer>
       <FlexContainer isFlexColumn>
         <Subtitle hasNoMargin>On Rent</Subtitle>
-        <ReactApexChart options={options} series={onSaleSeries} type="donut" height={700} width={600} />
+        <ReactApexChart options={options} series={onSaleSeries} type="donut" height={700} width={'100%'} />
       </FlexContainer>
     </FlexContainer>
   )

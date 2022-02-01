@@ -1,4 +1,5 @@
 import { css } from '@linaria/core'
+
 export const styleTextWrapper = css`
   margin-bottom: 0.75rem;
   padding-bottom: 0.75rem;

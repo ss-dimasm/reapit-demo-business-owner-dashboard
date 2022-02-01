@@ -25,6 +25,7 @@ const CardLoading: FC<CardLoadingProps> = (props): ReactElement => {
     }
   `
 
+  // logic here
   return (
     <>
       <CardWrap className={elP0 + ' ' + loadingWrapper} style={{ height: props.height }}></CardWrap>

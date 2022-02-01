@@ -1,7 +1,7 @@
 import React, { FC, ReactElement } from 'react'
 
 import { css } from '@linaria/core'
-import { FlexContainer } from '@reapit/elements'
+import { DESKTOP_BREAKPOINT, FlexContainer } from '@reapit/elements'
 
 const styleTextWrapper = css`
   margin-bottom: 0.75rem;
@@ -12,12 +12,18 @@ const styleHeader = css`
   color: var(--color-grey-dark);
   font-weight: 600;
   font-size: var(--font-size-subheading);
+  @media (max-width: ${DESKTOP_BREAKPOINT}px) {
+    font-size: 1.15rem;
+  }
 `
 
 const styleAdditionalLinkText = css`
   font-weight: 600;
   font-size: var(--font-size-default);
   color: var(--color-blue-light2);
+  @media (max-width: ${DESKTOP_BREAKPOINT}px) {
+    font-size: 0.9rem;
+  }
 `
 
 /**

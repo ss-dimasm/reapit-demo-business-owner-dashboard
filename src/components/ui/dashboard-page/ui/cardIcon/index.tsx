@@ -1,5 +1,5 @@
-import { elMl3, elMl4, FlexContainer } from '@reapit/elements'
 import React, { FC, ReactElement } from 'react'
+import { elMl3, elMl4, FlexContainer, useMediaQuery } from '@reapit/elements'
 
 import { MdOutlineApartment, MdSupervisorAccount, MdOutlinePeopleOutline } from 'react-icons/md'
 import { RiMoneyPoundBoxLine } from 'react-icons/ri'
@@ -12,7 +12,8 @@ import { alternativeTextStyle, totalItemsStyle } from './index-style'
  * @returns
  */
 const Icon: FC<IconProps> = ({ iconType }): ReactElement => {
-  const DEFAULT_SIZE = '4rem'
+  const { isWideScreen, isSuperWideScreen, is4KScreen } = useMediaQuery()
+  const DEFAULT_SIZE = isWideScreen || isSuperWideScreen || is4KScreen ? '4rem' : '3rem'
   const DEFAULT_COLOR = 'var(--color-blue-dark)'
   switch (iconType) {
     case 'apartment':
