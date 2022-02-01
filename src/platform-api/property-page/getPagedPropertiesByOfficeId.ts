@@ -31,15 +31,16 @@ const useGetPagedPropertiesByOfficeId = (officeId: string) => {
   const { connectSession } = useReapitConnect(reapitConnectBrowserSession)
 
   return useInfiniteQuery(
-    ['Paged Property Data with Id Office page'],
+    ['Paged Property Data with Id Office - Property Page'],
     ({ pageParam = 1 }) => getPagedPropertiesByOfficeId(connectSession!, officeId, pageParam),
     {
       enabled: !!connectSession,
       keepPreviousData: true,
       getNextPageParam: (lastPage) => {
-        if (lastPage!._links!['next'].href) {
+        if (lastPage!._links!['next']) {
           return lastPage!.pageNumber! + 1
         }
+        return undefined
       },
     },
   )

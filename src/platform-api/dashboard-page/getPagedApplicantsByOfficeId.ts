@@ -24,18 +24,20 @@ const getPagedApplicantsByOfficeId = async (
   return data
 }
 
-const useGetPagedApplicantsByOfficeId = (officeId: string, pageParam: number) => {
+const useGetPagedApplicantsByOfficeId = (officeId: string) => {
   const { connectSession } = useReapitConnect(reapitConnectBrowserSession)
   return useInfiniteQuery(
-    ['Paged Applicants Data with Id Office page', pageParam],
-    () => getPagedApplicantsByOfficeId(connectSession!, officeId, pageParam),
+    ['Paged Applicants Data with Id Office - Dashboard Page'],
+    ({ pageParam = 1 }) => getPagedApplicantsByOfficeId(connectSession!, officeId, pageParam),
     {
       enabled: !!connectSession,
       keepPreviousData: true,
+      staleTime: 6000,
       getNextPageParam: (lastPage) => {
-        if (lastPage!.pageNumber! <= lastPage!.totalPageCount!) {
-          return true
+        if (lastPage!._links!['next']) {
+          return lastPage!.pageNumber! + 1
         }
+        return undefined
       },
     },
   )

@@ -1,32 +1,37 @@
-import { CardWrap } from '@reapit/elements'
-import { NegotiatorModel } from '@reapit/foundations-ts-definitions'
 import React, { FC, ReactElement, useContext } from 'react'
-import { regroupArray, removeDuplicateArray } from '../../../utils/navigation'
+import { CardWrap } from '@reapit/elements'
+
 import { DataContext, DataContextParams } from '../../pages/dashboard-page'
 import CardHeader from './ui/cardHeader'
 import CardIcon from './ui/cardIcon'
 import CardLoading from './ui/cardLoading'
 import CardSummaryContent from './ui/cardSummaryContent'
 import CardSummaryWrapper from './ui/cardSummaryWrapper'
+import { NegotiatorModel, NegotiatorModelPagedResult } from '@reapit/foundations-ts-definitions'
+import { regroupArray } from '../../../utils/navigation'
+import { InfiniteData } from 'react-query'
+
+// import { regroupArray } from '../../../utils/navigation'
+// import { NegotiatorModel } from '@reapit/foundations-ts-definitions'
 
 const AgentSummary: FC<{}> = (): ReactElement => {
   const centralData = useContext<DataContextParams | null>(DataContext!)
   const { totalData, isFetching, data } = centralData?.agentsProperty as DataContextParams['agentsProperty']
 
-  if (isFetching) return <CardLoading />
-
+  if (isFetching || !data) return <CardLoading />
   // regroup data
-  const regroupArrData: NegotiatorModel[] = regroupArray<NegotiatorModel>(data as NegotiatorModel[][])
-  // remove duplicate data
-  const removeDuplicatedData: NegotiatorModel[] = removeDuplicateArray<NegotiatorModel>(
-    regroupArrData as NegotiatorModel[],
-  )
+  const regroupArr = regroupArray<
+    InfiniteData<NegotiatorModelPagedResult>,
+    NegotiatorModelPagedResult,
+    NegotiatorModel
+  >(data!)
+
   // get Agent active
-  const activeAgent: NegotiatorModel[] = removeDuplicatedData.filter((a) => a.active === true)
+  const activeAgent: NegotiatorModel[] = regroupArr.filter((a) => a.active === true)
   // get Agent unActive
-  const nonActiveAgent: NegotiatorModel[] = removeDuplicatedData.filter((a) => a.active === false)
+  const nonActiveAgent: NegotiatorModel[] = regroupArr.filter((a) => a.active === false)
   // get Agent new (in 1 month)
-  const newAgent: NegotiatorModel[] = removeDuplicatedData.filter(
+  const newAgent: NegotiatorModel[] = regroupArr.filter(
     (a) => new Date(a.created as string) > new Date(new Date().getTime() - 30 * 24 * 60 * 60 * 1000),
   )
 

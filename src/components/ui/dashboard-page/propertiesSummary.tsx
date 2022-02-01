@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { FC, ReactElement, useContext } from 'react'
 
 import { CardWrap } from '@reapit/elements'
@@ -9,14 +10,14 @@ import CardSummaryContent from './ui/cardSummaryContent'
 
 import CardLoading from './ui/cardLoading'
 import { DataContext, DataContextParams } from '../../pages/dashboard-page'
-import { PropertyModel } from '@reapit/foundations-ts-definitions'
 import {
   propertiesFilterMarketingMode,
   propertiesFilterRentStatus,
   propertiesFilterSellStatus,
   regroupArray,
-  removeDuplicateArray,
 } from '../../../utils/navigation'
+import { PropertyModel, PropertyModelPagedResult } from '@reapit/foundations-ts-definitions'
+import { InfiniteData } from 'react-query'
 
 const PropertiesSummary: FC<{}> = (): ReactElement => {
   const centralData = useContext<DataContextParams | null>(DataContext!)
@@ -24,19 +25,17 @@ const PropertiesSummary: FC<{}> = (): ReactElement => {
 
   if (isFetching) return <CardLoading />
 
-  // regroup data
-  const regroupArrData: PropertyModel[] = regroupArray<PropertyModel>(data as PropertyModel[][])
-  // remove duplicate data
-  const removeDuplicatedData: PropertyModel[] = removeDuplicateArray<PropertyModel>(regroupArrData as PropertyModel[])
-  // on sell properties
-  const toSellProperties: PropertyModel[] = propertiesFilterMarketingMode(removeDuplicatedData, 'selling')
-  // on rent properties
-  const toRentProperties: PropertyModel[] = propertiesFilterMarketingMode(removeDuplicatedData, 'letting')
-  // on sell/rent properties
-  const toSellAndRentProperties: PropertyModel[] = propertiesFilterMarketingMode(
-    removeDuplicatedData,
-    'sellingAndLetting',
+  // // regroup data
+  const regroupArr = regroupArray<InfiniteData<PropertyModelPagedResult>, PropertyModelPagedResult, PropertyModel>(
+    data!,
   )
+
+  // on sell properties
+  const toSellProperties: PropertyModel[] = propertiesFilterMarketingMode(regroupArr, 'selling')
+  // on rent properties
+  const toRentProperties: PropertyModel[] = propertiesFilterMarketingMode(regroupArr, 'letting')
+  // on sell/rent properties
+  const toSellAndRentProperties: PropertyModel[] = propertiesFilterMarketingMode(regroupArr, 'sellingAndLetting')
   const toSellPropertiesQuantity = propertiesFilterSellStatus(toSellProperties)
   const toRentPropertiesQuantity = propertiesFilterRentStatus(toRentProperties)
   const toSellAndRentPropertiesQuantity = propertiesFilterRentStatus(toSellAndRentProperties)

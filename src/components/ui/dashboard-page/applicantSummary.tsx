@@ -1,6 +1,5 @@
 import React, { FC, ReactElement, useContext } from 'react'
 import { CardWrap } from '@reapit/elements'
-import { ApplicantModel } from '@reapit/foundations-ts-definitions'
 
 import CardHeader from './ui/cardHeader'
 import CardIcon from './ui/cardIcon'
@@ -9,7 +8,9 @@ import CardSummaryContent from './ui/cardSummaryContent'
 import CardLoading from './ui/cardLoading'
 
 import { DataContext, DataContextParams } from '../../pages/dashboard-page'
-import { regroupArray, removeDuplicateArray } from '../../../utils/navigation'
+import { InfiniteData } from 'react-query'
+import { regroupArray } from '../../../utils/navigation'
+import { ApplicantModel, ApplicantModelPagedResult } from '@reapit/foundations-ts-definitions'
 
 const ApplicantSummary: FC<{}> = (): ReactElement => {
   const centralData = useContext<DataContextParams | null>(DataContext!)
@@ -17,17 +18,16 @@ const ApplicantSummary: FC<{}> = (): ReactElement => {
   if (isFetching) return <CardLoading />
 
   // regroup data array
-  const regroupArrData: ApplicantModel[] = regroupArray<ApplicantModel>(data as ApplicantModel[][])
-  // remove duplicate data
-  const removeDuplicatedData: ApplicantModel[] = removeDuplicateArray<ApplicantModel>(
-    regroupArrData as ApplicantModel[],
+  const regroupArr = regroupArray<InfiniteData<ApplicantModelPagedResult>, ApplicantModelPagedResult, ApplicantModel>(
+    data,
   )
+
   // get applicant active
-  const activeApplicant: ApplicantModel[] = removeDuplicatedData.filter((a) => a.active === true)
+  const activeApplicant: ApplicantModel[] = regroupArr.filter((a) => a.active === true)
   // get applicant unActive
-  const nonactiveApplicant: ApplicantModel[] = removeDuplicatedData.filter((a) => a.active === false)
+  const nonactiveApplicant: ApplicantModel[] = regroupArr.filter((a) => a.active === false)
   // get applicant new (in 1 month)
-  const newApplicant: ApplicantModel[] = removeDuplicatedData.filter(
+  const newApplicant: ApplicantModel[] = regroupArr.filter(
     (a) => new Date(a.created as string) > new Date(new Date().getTime() - 30 * 24 * 60 * 60 * 1000),
   )
 

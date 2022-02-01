@@ -6,8 +6,9 @@ import CardActivityTabs from './ui/cardActivityTabs'
 import CardHeader from './ui/cardHeader'
 import { DataContext, DataContextParams } from '../../pages/dashboard-page'
 import CardLoading from './ui/cardLoading'
-import { TaskModel } from '@reapit/foundations-ts-definitions'
-import { regroupArray, removeDuplicateArray } from '../../../utils/navigation'
+import { regroupArray } from '../../../utils/navigation'
+import { TaskModel, TaskModelPagedResult } from '@reapit/foundations-ts-definitions'
+import { InfiniteData } from 'react-query'
 
 export type ActivityTabMenuType = 'Active' | 'Completed'
 
@@ -19,11 +20,10 @@ const ActivitySection: FC<{}> = (): ReactElement => {
 
   if (isFetching) return <CardLoading height={400} />
 
-  // regroup data
-  const regroupArrData: TaskModel[] = regroupArray<TaskModel>(data as TaskModel[][])
+  const regroupArr = regroupArray<InfiniteData<TaskModelPagedResult>, TaskModelPagedResult, TaskModel>(data!)
   // remove duplicate data
-  const removeDuplicatedData: TaskModel[] = removeDuplicateArray<TaskModel>(regroupArrData as TaskModel[])
 
+  // console.log('activity', removeDuplicatedData)
   const [tabActiveMenu, setTabActiveMenu] = useState<number>(0)
   const [tabMenuOfCategory] = useState<ActivityTabMenuType[]>(ACTIVITY_TAB_MENU)
 
@@ -39,11 +39,7 @@ const ActivitySection: FC<{}> = (): ReactElement => {
         tabMenuList={tabMenuOfCategory}
         changeTheTabActiveMenu={changeTheTabActiveMenu}
       />
-      <CardActivityContent
-        activeTabMenu={tabActiveMenu}
-        tabMenuList={tabMenuOfCategory}
-        taskData={removeDuplicatedData}
-      />
+      <CardActivityContent activeTabMenu={tabActiveMenu} tabMenuList={tabMenuOfCategory} taskData={regroupArr} />
     </CardWrap>
   )
 }

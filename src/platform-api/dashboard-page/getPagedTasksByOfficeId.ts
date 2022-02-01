@@ -24,18 +24,19 @@ const getPagedTasksByOfficeId = async (
   return data
 }
 
-const useGetPagedTasksByOfficeId = (officeId: string, pageParam: number) => {
+const useGetPagedTasksByOfficeId = (officeId: string) => {
   const { connectSession } = useReapitConnect(reapitConnectBrowserSession)
   return useInfiniteQuery(
-    ['Paged Tasks Data with Id Office page', pageParam],
-    () => getPagedTasksByOfficeId(connectSession!, officeId, pageParam),
+    ['Paged Tasks Data with Id Office - Dashboard Page'],
+    ({ pageParam = 1 }) => getPagedTasksByOfficeId(connectSession!, officeId, pageParam),
     {
       enabled: !!connectSession,
       keepPreviousData: true,
       getNextPageParam: (lastPage) => {
-        if (lastPage!.pageNumber! <= lastPage!.totalPageCount!) {
-          return true
+        if (lastPage!._links!['next']) {
+          return lastPage!.pageNumber! + 1
         }
+        return undefined
       },
     },
   )

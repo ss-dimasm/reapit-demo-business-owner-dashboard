@@ -11,20 +11,13 @@ export const navigate = (history: History, route: string) => (): void => {
 }
 
 /**
- * Used to regroup array from fetch data in React Content
- * @param data
- * @returns {T[]}
+ * Used to regroup API array Paged Result from Reapit Resources
+ * @param datas - only for paged result only
+ * @returns {T3[]}
  */
-export const regroupArray = <T>(data: T[][]): T[] => {
-  const tempArrData: T[] = []
-  for (let i = 0; i < data!.length; i++) {
-    for (let j = 0; j < data[i]!.length; j++) {
-      if (data) {
-        const tempData = data[i]![j] as T
-        tempArrData.push(tempData)
-      }
-    }
-  }
+export const regroupArray = <T1, T2, T3>(datas: T1[] | any): T3[] => {
+  const tempArrData: T3[] = []
+  datas && datas.map((data: T2 | any) => data && data._embedded.map((single: T3) => single && tempArrData.push(single)))
   return tempArrData
 }
 

@@ -1,6 +1,9 @@
-import { PropertyModel } from '@reapit/foundations-ts-definitions'
 import React, { FC, ReactElement, useContext } from 'react'
-import { propertiesFilterMarketingMode, regroupArray, removeDuplicateArray } from '../../../../../utils/navigation'
+
+import { PropertyModel, PropertyModelPagedResult } from '@reapit/foundations-ts-definitions'
+import { InfiniteData } from 'react-query'
+
+import { propertiesFilterMarketingMode, regroupArray } from '../../../../../utils/navigation'
 import { DataContext, DataContextParams } from '../../../../pages/dashboard-page'
 
 import type { ChartPropertiesProps, PropertiesSubMenuListType } from './index-interfaces'
@@ -13,17 +16,17 @@ import TypeChartProperties from './TypeChartProperties'
 
 const ChartProperties: FC<ChartPropertiesProps> = (props): ReactElement => {
   const centralData = useContext<DataContextParams | null>(DataContext!)
+
   const { data } = centralData?.propertiesProperty as DataContextParams['propertiesProperty']
 
-  // regroup data
-  const regroupArrData: PropertyModel[] = regroupArray<PropertyModel>(data as PropertyModel[][])
-  // remove duplicate data
-  const removeDuplicatedData: PropertyModel[] = removeDuplicateArray<PropertyModel>(regroupArrData as PropertyModel[])
+  // // regroup data
+  const regroupArr = regroupArray<InfiniteData<PropertyModelPagedResult>, PropertyModelPagedResult, PropertyModel>(data)
 
   // on sell properties
-  const toSellProperties: PropertyModel[] = propertiesFilterMarketingMode(removeDuplicatedData, 'selling')
+  const toSellProperties = propertiesFilterMarketingMode<PropertyModel>(regroupArr, 'selling')
+
   // on rent properties
-  const toRentProperties: PropertyModel[] = propertiesFilterMarketingMode(removeDuplicatedData, 'letting')
+  const toRentProperties = propertiesFilterMarketingMode<PropertyModel>(regroupArr, 'letting')
 
   const { tabActive, tabMenuOfCategory } = props
 
@@ -33,11 +36,11 @@ const ChartProperties: FC<ChartPropertiesProps> = (props): ReactElement => {
     case 'On Rent':
       return <ToLetChartProperties {...props} propertyData={toRentProperties} />
     case 'Status':
-      return <StatusChartProperties {...props} propertyData={removeDuplicatedData} />
+      return <StatusChartProperties {...props} propertyData={[]} />
     case 'Type':
-      return <TypeChartProperties {...props} propertyData={removeDuplicatedData} />
+      return <TypeChartProperties {...props} propertyData={[]} />
     case 'Location':
-      return <LocationChartProperties {...props} propertyData={removeDuplicatedData} />
+      return <LocationChartProperties {...props} propertyData={[]} />
   }
 }
 

@@ -24,18 +24,21 @@ const getPagedPropertiesByOfficeId = async (
   return data
 }
 
-const useGetPagedPropertiesByOfficeId = (officeId: string, pageParam: number) => {
+const useGetPagedPropertiesByOfficeId = (officeId: string) => {
   const { connectSession } = useReapitConnect(reapitConnectBrowserSession)
   return useInfiniteQuery(
-    ['Paged Property Data with Id Office page', pageParam],
-    () => getPagedPropertiesByOfficeId(connectSession!, officeId, pageParam),
+    ['Paged Property Data with Id Office - Dashboard Page'],
+    ({ pageParam = 1 }) => getPagedPropertiesByOfficeId(connectSession!, officeId, pageParam),
     {
       enabled: !!connectSession,
       keepPreviousData: true,
       getNextPageParam: (lastPage) => {
-        if (lastPage!.pageNumber! <= lastPage!.totalPageCount!) {
-          return true
+        if (!lastPage?._links) return undefined
+
+        if (lastPage!._links!['next']) {
+          return lastPage!.pageNumber! + 1
         }
+        return undefined
       },
     },
   )

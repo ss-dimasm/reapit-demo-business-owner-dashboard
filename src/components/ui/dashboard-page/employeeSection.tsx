@@ -10,7 +10,7 @@ import CardLoading from './ui/cardLoading'
 
 const EmployeeSection: FC<{}> = (): ReactElement => {
   const centralData = useContext<DataContextParams | null>(DataContext!)
-  if (centralData!.contactProperty.isFetching) return <CardLoading height={325} />
+  if (centralData!.agentsProperty.isFetching) return <CardLoading height={325} />
   // logic here
   return (
     <CardWrap className="el-p0">
