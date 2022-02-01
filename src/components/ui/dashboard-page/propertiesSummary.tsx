@@ -53,7 +53,7 @@ const PropertiesSummary: FC<{}> = (): ReactElement => {
   return (
     <>
       <CardWrap className="el-p0">
-        <CardHeader title="Property" additionalLinkText="See all properties" link="summary/properties" />
+        <CardHeader title="Property" additionalLinkText="See all properties" link="properties" />
         <CardIcon iconType="apartment" totalItems={totalData} alternativeText="Properties" />
         <CardSummaryWrapper>
           <CardSummaryContent totalCount={occupiedPropertiesQuantity} alternativeText="Occupied" />

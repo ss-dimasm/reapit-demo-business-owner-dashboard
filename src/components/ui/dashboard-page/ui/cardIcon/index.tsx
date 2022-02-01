@@ -12,8 +12,8 @@ import { alternativeTextStyle, totalItemsStyle } from './index-style'
  * @returns
  */
 const Icon: FC<IconProps> = ({ iconType }): ReactElement => {
-  const { isWideScreen, isSuperWideScreen, is4KScreen } = useMediaQuery()
-  const DEFAULT_SIZE = isWideScreen || isSuperWideScreen || is4KScreen ? '4rem' : '3rem'
+  const { isWideScreen, isSuperWideScreen, is4KScreen, isMobile } = useMediaQuery()
+  const DEFAULT_SIZE = isWideScreen || isSuperWideScreen || is4KScreen ? '4rem' : isMobile ? '2.5rem' : '3rem'
   const DEFAULT_COLOR = 'var(--color-blue-dark)'
   switch (iconType) {
     case 'apartment':

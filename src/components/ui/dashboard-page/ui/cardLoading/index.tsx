@@ -1,5 +1,5 @@
 import React, { FC, ReactElement } from 'react'
-import { CardWrap, elP0 } from '@reapit/elements'
+import { CardWrap, elP0, MOBILE_BREAKPOINT } from '@reapit/elements'
 import { css } from '@linaria/core'
 
 interface CardLoadingProps {
@@ -22,6 +22,9 @@ const CardLoading: FC<CardLoadingProps> = (props): ReactElement => {
       to {
         background-position: 0 0;
       }
+    }
+    @media (max-width: ${MOBILE_BREAKPOINT}px) {
+      height: 180px;
     }
   `
 

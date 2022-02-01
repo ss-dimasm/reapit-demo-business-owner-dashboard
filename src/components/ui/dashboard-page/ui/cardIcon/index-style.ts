@@ -1,5 +1,5 @@
 import { css } from '@linaria/core'
-import { DESKTOP_BREAKPOINT } from '@reapit/elements'
+import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from '@reapit/elements'
 
 export const totalItemsStyle = css`
   font-weight: bolder;
@@ -9,11 +9,17 @@ export const totalItemsStyle = css`
   @media (max-width: ${DESKTOP_BREAKPOINT}px) {
     font-size: 1.5rem;
   }
+  @media (max-width: ${MOBILE_BREAKPOINT}px) {
+    font-size: 1.25rem;
+  }
 `
 export const alternativeTextStyle = css`
   color: var(--color-blue-light);
   font-size: 1rem;
   @media (max-width: ${DESKTOP_BREAKPOINT}px) {
     font-size: 0.9rem;
+  }
+  @media (max-width: ${MOBILE_BREAKPOINT}px) {
+    font-size: 0.7rem;
   }
 `

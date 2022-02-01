@@ -9,7 +9,7 @@ import RevenueSection from '../../ui/dashboard-page/revenueSection'
 
 const MobileDashboardPage = () => {
   return (
-    <div className={`${elWFull} ${elM6}`}>
+    <div className={`${elM6}`}>
       <FlexContainer className={`${elWFull}`} isFlexJustifyBetween>
         <div style={{ width: '48.5%' }}>
           <PropertiesSummary />
