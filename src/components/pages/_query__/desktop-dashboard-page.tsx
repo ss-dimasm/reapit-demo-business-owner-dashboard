@@ -1,5 +1,5 @@
-import { elMt6, elWFull, FlexContainer } from '@reapit/elements'
 import React from 'react'
+import { elMt6, elWFull, FlexContainer } from '@reapit/elements'
 import ActivitySection from '../../ui/dashboard-page/activitySection'
 import AgentSummary from '../../ui/dashboard-page/agentSummary'
 import ApplicantSummary from '../../ui/dashboard-page/applicantSummary'

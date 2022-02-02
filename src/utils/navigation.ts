@@ -206,3 +206,38 @@ const propertiesDataOnRentForPieChart = (propertiesData: PropertyModel[]): PieCh
 
   return data
 }
+
+/**
+ * set up address information from Property Model
+ * @description return address information of Property Model
+ * @param propertyData - PropertyModel
+ * @returns string
+ */
+export const propertyAddressCompiler = (propertyData: PropertyModel): string => {
+  const { address } = propertyData
+
+  const buildingNumber = address?.buildingNumber !== '' ? address?.buildingNumber : ''
+  const line1 = address?.line1 !== '' ? address?.line1 : ''
+  const line2 = address?.line2 !== '' ? ` ,${address?.line2}` : ''
+
+  if (!buildingNumber) return `${line1} ${line2}`
+  if (!buildingNumber && !line1 && !line2) return 'Unknown Address'
+
+  return `${buildingNumber} ${line1} ${line2}`
+}
+
+/**
+ * adjusting negotiator list to getResultList of ControlledSearchableDropdown Component
+ * @param negotiatorList
+ * @returns
+ */
+export const configListOfAgentFormatted = <T1, T2>(negotiatorList: T1 | any): T2[] => {
+  const formattedNegotiator: T2[] | any = []
+  negotiatorList.map((negotiator) => {
+    formattedNegotiator.push({
+      label: negotiator.name!,
+      result: negotiator.id!,
+    })
+  })
+  return formattedNegotiator
+}

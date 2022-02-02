@@ -4,8 +4,14 @@ export const cardWrapper = css`
   margin: 1rem 0 0 0;
   padding: 0;
   border-radius: 5px;
+  border: 2px solid transparent;
   cursor: pointer;
 `
+
+export const cardWrapperSelected = css`
+  border: 2px solid var(--color-blue-light2);
+`
+
 export const imageWrapper = css`
   width: 35%;
 `
@@ -14,7 +20,9 @@ export const descWrapper = css`
   width: 64%;
   padding: 0.5rem;
   position: relative;
+  overflow-wrap: break-word;
 `
+
 export const imageOptionsStyle = css`
   object-fit: cover;
   width: 100%;

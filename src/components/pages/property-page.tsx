@@ -8,29 +8,51 @@ import PropertiesDetails from '../ui/property-page/propertiesDetails'
 import useGetPagedPropertiesByOfficeId from '../../platform-api/property-page/getPagedPropertiesByOfficeId'
 import { wrapperLeft, wrapperMain, wrapperRight } from './__styles__/property-page.style'
 import { DEFAULT_OFFICE_ID } from '../../constants/settings'
+import { NegotiatorModel, NegotiatorModelPagedResult, PropertyModel } from '@reapit/foundations-ts-definitions'
+import useGetPagedAgentsByOfficeId from '../../platform-api/dashboard-page/getPagedAgentsByOfficeId'
+import { regroupArray } from '../../utils/navigation'
 import { InfiniteData } from 'react-query'
-import { PropertyModelPagedResult } from '@reapit/foundations-ts-definitions'
+import FilterModalContent from '../ui/property-page/filterModalContent'
+
+export type AgentSearchableDropDown = {
+  label: string
+  result: string
+}
 
 const PropertyPage: FC<{}> = (): ReactElement => {
   // state toggler for filter modal
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false)
+  const [selectedProperty, setSelectedProperty] = useState<PropertyModel | undefined>()
 
-  // put properties paged data to this state
-  const [propertiesPagedData, setPropertiesPagedData] = useState<
-    InfiniteData<PropertyModelPagedResult | undefined> | undefined
-  >()
+  // filter modal state zone
+  const [selectedNegotiatorId, setSelectedNegotiatorId] = useState<AgentSearchableDropDown | undefined>()
 
   // query paged properties here (useInfiniteQuery)
-  const { hasNextPage, fetchNextPage, data } = useGetPagedPropertiesByOfficeId(DEFAULT_OFFICE_ID)
+  const propertiesFetchedData = useGetPagedPropertiesByOfficeId(DEFAULT_OFFICE_ID)
+
+  // load all paged negotiator
+  const negotiatorFetchedData = useGetPagedAgentsByOfficeId(DEFAULT_OFFICE_ID)
+
+  const listOfNegotiator = regroupArray<
+    InfiniteData<NegotiatorModelPagedResult>,
+    NegotiatorModelPagedResult,
+    NegotiatorModel
+  >(negotiatorFetchedData.data && negotiatorFetchedData.data.pages)
 
   // process putting paged properties to propertiesPagedData state
   useEffect(() => {
-    if (!data) return
-    setPropertiesPagedData(data.pages as any)
-  }, [data])
+    propertiesFetchedData.data &&
+      !selectedProperty &&
+      setSelectedProperty(propertiesFetchedData.data.pages[0]!._embedded![0])
+  }, [propertiesFetchedData.data])
 
-  // make sure data
-  console.log(propertiesPagedData)
+  // change selected property
+  const changeSelectedProperty = (propertyData: PropertyModel): void => setSelectedProperty(propertyData)
+
+  // change selected negotiator on filter modal
+  const changeSelectedNegotiator = (agent: AgentSearchableDropDown | undefined): void => setSelectedNegotiatorId(agent)
+
+  console.log(selectedNegotiatorId)
   return (
     <>
       <Modal
@@ -39,7 +61,12 @@ const PropertyPage: FC<{}> = (): ReactElement => {
         title="Filter"
         style={{ zIndex: 1000 }}
       >
-        Test
+        <FilterModalContent
+          negotiatorList={listOfNegotiator}
+          selectedNegotiatorList={selectedNegotiatorId!}
+          changeSelectedNegotiatorList={changeSelectedNegotiator}
+          isNegotiatorFetching={negotiatorFetchedData.isLoading}
+        />
       </Modal>
       <FlexContainer isFlexAlignCenter isFlexJustifyCenter className={elWFull}>
         <FlexContainer className={`${wrapperMain}`} isFlexJustifyBetween>
@@ -47,7 +74,16 @@ const PropertyPage: FC<{}> = (): ReactElement => {
             <CardWrap className={elHFull}>
               <SearchFilter openFilterModal={() => setModalIsOpen(true)} />
               <div className={elMt6}>
-                <PropertiesList propertiesData={data!} fetchNextPage={fetchNextPage} hasNextPage={hasNextPage} />
+                <PropertiesList
+                  propertiesData={propertiesFetchedData.data!}
+                  fetchNextPage={propertiesFetchedData.fetchNextPage}
+                  hasNextPage={propertiesFetchedData.hasNextPage}
+                  isFetchingNextPage={propertiesFetchedData.isFetchingNextPage}
+                  selectedProperty={selectedProperty!}
+                  changeSelectedProperty={changeSelectedProperty}
+                  listOfNegotiator={listOfNegotiator}
+                  isNegotiatorFetchIsFetching={negotiatorFetchedData.isLoading}
+                />
               </div>
             </CardWrap>
           </div>
